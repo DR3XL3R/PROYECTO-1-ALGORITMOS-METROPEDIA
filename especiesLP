@@ -1,0 +1,87 @@
+import requests
+
+def obtener_especies():
+    """Obtiene la lista de especies desde SWAPI."""
+    especies = []
+    url = "https://swapi.dev/api/species/"
+    
+    while url:
+        response = requests.get(url)
+        data = response.json()
+        especies.extend(data['results'])
+        url = data['next'] 
+        
+         # Paginación
+    
+    return especies
+
+def obtener_planeta(planeta_url):
+    """Obtiene el nombre del planeta de origen desde SWAPI."""
+    if planeta_url:
+        response = requests.get(planeta_url)
+        return response.json().get('name', 'Desconocido')
+    return 'Desconocido'
+
+def obtener_personajes(personajes_urls):
+    """Obtiene los nombres de los personajes que pertenecen a la especie."""
+    personajes = []
+    for url in personajes_urls:
+        response = requests.get(url)
+        personajes.append(response.json().get('name', 'Desconocido'))
+    return personajes
+
+def obtener_episodios(films_urls):
+    """Obtiene los nombres de los episodios en los que aparece la especie."""
+    episodios = []
+    for url in films_urls:
+        response = requests.get(url)
+        episodios.append(response.json().get('title', 'Desconocido'))
+    return episodios
+
+def mostrar_especies(especies):
+    """Muestra la lista de especies con la información requerida."""
+    for especie in sorted(especies, key=lambda x: x['url']):
+        nombre = especie.get('name', 'Desconocido')
+        altura = especie.get('average_height', 'Desconocido')
+        clasificacion = especie.get('classification', 'Desconocido')
+        planeta_origen = obtener_planeta(especie.get('homeworld'))
+        lengua_materna = especie.get('language', 'Desconocido')
+        personajes = obtener_personajes(especie.get('people', []))
+        episodios = obtener_episodios(especie.get('films', []))
+
+        print(f"Nombre: {nombre}")
+        print(f"Altura promedio: {altura}")
+        print(f"Clasificación: {clasificacion}")
+        print(f"Planeta de origen: {planeta_origen}")
+        print(f"Lengua materna: {lengua_materna}")
+        print(f"Personajes: {', '.join(personajes) if personajes else 'Ninguno'}")
+        print(f"Episodios: {', '.join(episodios) if episodios else 'Ninguno'}")
+        print("-" * 40) 
+        
+         # Separador entre especies
+
+def menu_principal():
+    """Muestra el menú principal del sistema."""
+    while True:
+        print("Menu Principal:")
+        print("1. Listar películas de Star Wars")
+        print("2. Listar especies de Star Wars")
+        print("3. Salir")
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            peliculas = obtener_peliculas()
+            mostrar_peliculas(peliculas)
+        elif opcion == "2":
+            especies = obtener_especies()
+            mostrar_especies(especies)
+        elif opcion == "3":
+            print("¡Hasta luego!")
+            break
+        else:
+            print("Opción no válida, por favor intente de nuevo.")
+
+# Ejecutar el programa
+if __name__ == "__main__":
+    menu_principal()
+
