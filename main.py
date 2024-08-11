@@ -4,6 +4,8 @@ from starship import load_starships, Starship
 from vehicle import load_vehicles, Vehicle
 from species import load_species, Species
 from lists import list_movies, list_species, list_planets, search_character
+from Mision import Mision 
+from Usuario import Usuario 
 
 def load_all_data():
     print("Loading data from SWAPI...")
@@ -21,7 +23,7 @@ def load_all_data():
 def main():
     while True:
         print("\nWelcome to the Galactic Encyclopedia!")
-        print("Select what you want to do:")
+        print("Ingresa la pocion que deseas:")
         print("1. Mostrar ")
         print("2. Gráficas")
         print("3. Mision ")
@@ -46,6 +48,70 @@ def main():
         elif selection == '2':
             search_character()
         
-        elif selection == '3':
-            #crear misiones y usuario 
+        elif selection == "3":
+            usuario = input("Ingrese Su Usuario: ")
+            usuario.lower() 
+            usuario_registrado()
+        
+         #verificando si el usuario ya esta registrado. Si no lo esta, inicia el registro  
+def usuario_registrado(usuario):
+    usuarios = []
+    if usuario not in usuarios: 
+        name = input("ingrese su nombre: ")
+        apellido = input("ingrese su apellido")
+        user = input("Cree su usuario: ")
+        if usuarios[user] == user:
+            print("El usuario ya existe")
+        else:
+            usuarios[user] = user
+            print(f"Usuario {usuario} registrado!")
+                
+    else: 
+        print(f"Bienvenido {usuario} !")
+            
+        print("Menú: ")
+        print("1. Crear misión")
+        print("2. Ver misiones")
+        print("3. Modificar misión")
+        print("4. Regresar al menu")
+        sub_selection = input("===> ")
+
+        if sub_selection =="1":
+            crear_mision(usuario)
+            
+        elif sub_selection =="2":
+            pass
+        elif sub_selection =="3":
+            pass
+        elif sub_selection =="4":
+            main()
+        else:
+            print("Invalid selection.")
+
+
+def crear_mision(usuario):
+            print("Ingrese los datos de la misión: ")
+            nombre = input("Nombre De la mision: ")
+            planeta= input(" Planeta Elegido: ")
+            nave = input("Nave De La Mision: ")
+            armas= []
+            for a in range(7):
+                arma = input("armas de la mision: ")
+             
+            if arma: 
+                armas.append(arma)
+            else:
+                pass 
+            integrantes=[]
+            for i in range(7):
+                integrante = input("Ingresa el Integrante De La Mision: ")
+            if integrante:
+                integrantes.append(integrante)
+            else:
+                pass
+            misión = Mision(nombre, planeta, nave, armas, integrantes)
+            usuario_registrado[usuario].add_mision(misión)
+            print("Mision Creada. Que la fuerza te acompañe !!!")
+        
+            
 main()
