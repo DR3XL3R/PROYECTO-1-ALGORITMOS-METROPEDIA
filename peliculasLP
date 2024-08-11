@@ -1,0 +1,41 @@
+import requests
+
+def obtener_peliculas():
+    """Obtiene la lista de películas de Star Wars desde SWAPI."""
+    url = "https://swapi.dev/api/films/"
+    response = requests.get(url)
+    return response.json()['results']
+
+def mostrar_peliculas(peliculas):
+    """Muestra la lista de películas con la información requerida."""
+    for pelicula in peliculas:
+        print(f"Título: {pelicula['title']}")
+        print(f"Episodio: {pelicula['episode_id']}")
+        print(f"Fecha de lanzamiento: {pelicula['release_date']}")
+        print(f"Opening: {pelicula['opening_crawl']}")
+        print(f"Director: {pelicula['director']}")
+        print("-" * 40) 
+        
+       
+
+def menu_principal():
+    """Muestra el menú principal del sistema."""
+    while True:
+        print("Menu Principal:")
+        print("1. Listar películas de Star Wars")
+        print("2. Salir")
+        opcion = input("Seleccione una opción: ")
+
+        if opcion == "1":
+            peliculas = obtener_peliculas()
+            mostrar_peliculas(peliculas)
+        elif opcion == "2":
+            print("¡Hasta luego!")
+            break
+        else:
+            print("Opción no válida, por favor intente de nuevo.")
+
+
+if __name__ == "__main__":
+    menu_principal()
+    
